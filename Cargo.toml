@@ -8,7 +8,7 @@ license = "MIT"
 repository = "https://github.com/muijf/leetify"
 homepage = "https://github.com/muijf/leetify"
 documentation = "https://docs.rs/leetify"
-keywords = ["leetify", "csgo", "counter-strike", "api", "client", "steam"]
+keywords = ["leetify", "csgo", "counter-strike", "api", "client"]
 categories = ["api-bindings", "web-programming"]
 readme = "README.md"
 
