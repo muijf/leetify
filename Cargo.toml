@@ -1,6 +1,6 @@
 [package]
 name = "leetify"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 authors = ["Milan de Kruijf"]
 description = "A Rust client library for the Leetify Public CS API"
