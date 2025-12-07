@@ -2,6 +2,19 @@
 name = "leetify"
 version = "0.1.0"
 edition = "2024"
+authors = ["Milan de Kruijf"]
+description = "A Rust client library for the Leetify Public CS API"
+license = "MIT"
+repository = "https://github.com/muijf/leetify"
+homepage = "https://github.com/muijf/leetify"
+documentation = "https://docs.rs/leetify"
+keywords = ["leetify", "csgo", "counter-strike", "api", "client", "steam"]
+categories = ["api-bindings", "web-programming"]
+readme = "README.md"
+
+[lib]
+name = "leetify"
+path = "src/lib.rs"
 
 [features]
 default = ["player", "rustls-tls"]
@@ -19,3 +32,15 @@ serde_json = "1.0"
 thiserror = "2"
 tokio = { version = "1", features = ["full"] }
 chrono = { version = "0.4", features = ["serde"] }
+
+[package.metadata.docs.rs]
+all-features = true
+
+[[example]]
+name = "basic_usage"
+path = "examples/basic_usage.rs"
+
+[[example]]
+name = "player_api"
+path = "examples/player_api.rs"
+required-features = ["player"]
