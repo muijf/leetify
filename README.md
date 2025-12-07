@@ -43,7 +43,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-leetify = "0.1.0"
+leetify = "0.1.1"
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -63,16 +63,16 @@ tokio = { version = "1", features = ["full"] }
 
 ```toml
 # Default (includes player API and rustls)
-leetify = "0.1.0"
+leetify = "0.1.1"
 
 # Minimal setup (without Player API)
-leetify = { version = "0.1.0", default-features = false, features = ["rustls-tls"] }
+leetify = { version = "0.1.1", default-features = false, features = ["rustls-tls"] }
 
 # With native-tls instead of rustls
-leetify = { version = "0.1.0", default-features = false, features = ["player", "native-tls"] }
+leetify = { version = "0.1.1", default-features = false, features = ["player", "native-tls"] }
 
 # Custom feature combination
-leetify = { version = "0.1.0", default-features = false, features = ["player", "rustls-tls"] }
+leetify = { version = "0.1.1", default-features = false, features = ["player", "rustls-tls"] }
 ```
 
 > **Note**: The `player` feature enables the extended `Player` API which provides a more ergonomic interface. The core `Client` API is always available.
