@@ -1,0 +1,47 @@
+# Pre-commit hooks for Rust project
+# Install with: pip install pre-commit && pre-commit install
+
+repos:
+  # Rust-specific hooks using local scripts
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: bash -c 'cargo fmt --all -- --check'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: bash -c 'cargo clippy --all-targets --all-features -- -D warnings'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+      - id: cargo-test
+        name: cargo test
+        entry: bash -c 'cargo test --all-features'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+      - id: validate-version
+        name: validate version in README.md
+        entry: bash -c './scripts/validate-version.sh'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: check-case-conflict
