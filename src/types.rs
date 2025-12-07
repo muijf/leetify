@@ -47,34 +47,34 @@ impl AsRef<str> for LeetifyId {
 
 /// Player id - either a Steam64 ID or Leetify ID
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum PlayerId {
+pub enum Id {
     Steam64(Steam64Id),
     Leetify(LeetifyId),
 }
 
-impl From<Steam64Id> for PlayerId {
+impl From<Steam64Id> for Id {
     fn from(id: Steam64Id) -> Self {
-        PlayerId::Steam64(id)
+        Id::Steam64(id)
     }
 }
 
-impl From<LeetifyId> for PlayerId {
+impl From<LeetifyId> for Id {
     fn from(id: LeetifyId) -> Self {
-        PlayerId::Leetify(id)
+        Id::Leetify(id)
     }
 }
 
-impl From<&str> for PlayerId {
+impl From<&str> for Id {
     fn from(value: &str) -> Self {
         // Leetify IDs are UUIDs in format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         // Steam64 IDs are numeric strings (typically 17 digits)
         if is_uuid_format(value) {
-            PlayerId::Leetify(LeetifyId(value.to_string()))
+            Id::Leetify(LeetifyId(value.to_string()))
         } else if value.chars().all(|c| c.is_ascii_digit()) && value.len() >= 15 {
-            PlayerId::Steam64(Steam64Id(value.to_string()))
+            Id::Steam64(Steam64Id(value.to_string()))
         } else {
             // Default to Leetify ID if format is unclear
-            PlayerId::Leetify(LeetifyId(value.to_string()))
+            Id::Leetify(LeetifyId(value.to_string()))
         }
     }
 }
@@ -96,7 +96,7 @@ fn is_uuid_format(s: &str) -> bool {
         .all(|(part, &len)| part.len() == len && part.chars().all(|c| c.is_ascii_hexdigit()))
 }
 
-impl From<String> for PlayerId {
+impl From<String> for Id {
     fn from(value: String) -> Self {
         value.as_str().into()
     }

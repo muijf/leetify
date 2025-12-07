@@ -1,4 +1,4 @@
-use leetify::{Client, PlayerId};
+use leetify::{Client, Id};
 
 #[tokio::main]
 async fn main() -> Result<(), leetify::Error> {
@@ -7,7 +7,7 @@ async fn main() -> Result<(), leetify::Error> {
 
     // Create a Player instance using the extended API
     // This stores the id so you don't need to pass it to each method
-    let player = client.player(PlayerId::Steam64("76561198283431555".into()));
+    let player = client.player(Id::Steam64("76561198283431555".into()));
 
     // Now we can call methods without passing the id each time
     println!("Fetching player profile...");
@@ -30,7 +30,7 @@ async fn main() -> Result<(), leetify::Error> {
     // You can also create a Player directly
     use leetify::Player;
     let player2 = Player::new(
-        PlayerId::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into()),
+        Id::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into()),
         &client,
     );
 

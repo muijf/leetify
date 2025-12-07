@@ -80,7 +80,7 @@ leetify = { version = "0.1.0", default-features = false, features = ["player", "
 ## Quick Start
 
 ```rust
-use leetify::{Client, PlayerId};
+use leetify::{Client, Id};
 
 #[tokio::main]
 async fn main() -> Result<(), leetify::Error> {
@@ -89,7 +89,7 @@ async fn main() -> Result<(), leetify::Error> {
 
     // Get player profile by Steam64 ID
     let profile = client
-        .get_profile(PlayerId::Steam64("76561198283431555".into()))
+        .get_profile(Id::Steam64("76561198283431555".into()))
         .await?;
 
     println!("Player: {}", profile.name);
@@ -112,34 +112,34 @@ Winrate: 52.34%
 ### Get Player Profile
 
 ```rust
-use leetify::{Client, PlayerId};
+use leetify::{Client, Id};
 
 let client = Client::new();
 
 // By Steam64 ID
 let profile = client
-    .get_profile(PlayerId::Steam64("76561198283431555".into()))
+    .get_profile(Id::Steam64("76561198283431555".into()))
     .await?;
 
 // By Leetify ID (UUID format)
 let profile = client
-    .get_profile(PlayerId::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into()))
+    .get_profile(Id::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into()))
     .await?;
 
 // Using automatic conversion (UUID format -> Leetify, numeric strings -> Steam64)
-let id: PlayerId = "76561198283431555".into();
+let id: Id = "76561198283431555".into();
 let profile = client.get_profile(id).await?;
 ```
 
 ### Get Match History
 
 ```rust
-use leetify::{Client, PlayerId};
+use leetify::{Client, Id};
 
 let client = Client::new();
 
 let matches = client
-    .get_profile_matches(PlayerId::Steam64("76561198283431555".into()))
+    .get_profile_matches(Id::Steam64("76561198283431555".into()))
     .await?;
 
 for match_details in matches {
@@ -211,10 +211,10 @@ For a more ergonomic API, use the `Player` struct which stores the id
 and allows you to call methods without passing it each time:
 
 ```rust
-use leetify::{Client, PlayerId};
+use leetify::{Client, Id};
 
 let client = Client::new();
-let player = client.player(PlayerId::Steam64("76561198283431555".into()));
+let player = client.player(Id::Steam64("76561198283431555".into()));
 
 // Get profile
 let profile = player.profile().await?;
@@ -227,15 +227,15 @@ let matches = player.matches().await?;
 
 The library provides type-safe wrappers to prevent mixing up different ID types:
 
-- `PlayerId` - Enum for player identification (either `Steam64` or `Leetify`)
+- `Id` - Enum for player identification (either `Steam64` or `Leetify`)
 - `Steam64Id` - For Steam 64-bit IDs (numeric strings, typically 17 digits)
 - `LeetifyId` - For Leetify user IDs (UUID format: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
 - `DataSource` - Enum for data sources (FACEIT, Matchmaking, etc.)
 
-The `PlayerId` enum can be created from strings with automatic detection:
+The `Id` enum can be created from strings with automatic detection:
 - Strings matching UUID format (`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`) are treated as Leetify IDs
 - Numeric strings (15+ digits) are treated as Steam64 IDs
-- You can also explicitly use the enum variants (`PlayerId::Steam64` or `PlayerId::Leetify`) for clarity
+- You can also explicitly use the enum variants (`Id::Steam64` or `Id::Leetify`) for clarity
 
 ## Error Handling
 
@@ -265,7 +265,7 @@ match result {
 ### Basic Usage Example
 
 ```rust
-use leetify::{Client, PlayerId, DataSource};
+use leetify::{Client, Id, DataSource};
 
 #[tokio::main]
 async fn main() -> Result<(), leetify::Error> {
@@ -273,12 +273,12 @@ async fn main() -> Result<(), leetify::Error> {
 
     // Get profile
     let profile = client
-        .get_profile(PlayerId::Steam64("76561198283431555".into()))
+        .get_profile(Id::Steam64("76561198283431555".into()))
         .await?;
 
     // Get matches
     let matches = client
-        .get_profile_matches(PlayerId::Steam64("76561198283431555".into()))
+        .get_profile_matches(Id::Steam64("76561198283431555".into()))
         .await?;
 
     // Get match details
@@ -293,12 +293,12 @@ async fn main() -> Result<(), leetify::Error> {
 ### Extended Player API Example
 
 ```rust
-use leetify::{Client, PlayerId};
+use leetify::{Client, Id};
 
 #[tokio::main]
 async fn main() -> Result<(), leetify::Error> {
     let client = Client::new();
-    let player = client.player(PlayerId::Steam64("76561198283431555".into()));
+    let player = client.player(Id::Steam64("76561198283431555".into()));
 
     // No need to pass ID each time
     let profile = player.profile().await?;

@@ -191,23 +191,23 @@ impl Client {
     /// # Examples
     ///
     /// ```no_run
-    /// # use leetify::{Client, PlayerId, Steam64Id, LeetifyId};
+    /// # use leetify::{Client, Id, Steam64Id, LeetifyId};
     /// # async fn example() -> Result<(), leetify::Error> {
     /// let client = Client::new();
     ///
     /// // Using Steam64 ID
-    /// let profile = client.get_profile(PlayerId::Steam64("76561198000000000".into())).await?;
+    /// let profile = client.get_profile(Id::Steam64("76561198000000000".into())).await?;
     ///
     /// // Using Leetify ID (UUID format)
-    /// let profile = client.get_profile(PlayerId::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into())).await?;
+    /// let profile = client.get_profile(Id::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into())).await?;
     ///
     /// // Using automatic conversion with type annotation
-    /// let id: PlayerId = "76561198000000000".into();
+    /// let id: Id = "76561198000000000".into();
     /// let profile = client.get_profile(id).await?;
     /// # Ok(())
     /// # }
     /// ```
-    pub async fn get_profile(&self, id: impl Into<PlayerId>) -> Result<ProfileResponse, Error> {
+    pub async fn get_profile(&self, id: impl Into<Id>) -> Result<ProfileResponse, Error> {
         let id = id.into();
 
         let url = format!("{}/v3/profile", self.base_url);
@@ -231,25 +231,25 @@ impl Client {
     /// # Examples
     ///
     /// ```no_run
-    /// # use leetify::{Client, PlayerId};
+    /// # use leetify::{Client, Id};
     /// # async fn example() -> Result<(), leetify::Error> {
     /// let client = Client::new();
     ///
     /// // Get matches by Steam64 ID
-    /// let matches = client.get_profile_matches(PlayerId::Steam64("76561198000000000".into())).await?;
+    /// let matches = client.get_profile_matches(Id::Steam64("76561198000000000".into())).await?;
     ///
     /// // Get matches by Leetify ID (UUID format)
-    /// let matches = client.get_profile_matches(PlayerId::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into())).await?;
+    /// let matches = client.get_profile_matches(Id::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into())).await?;
     ///
     /// // Using automatic conversion with type annotation
-    /// let id: PlayerId = "76561198000000000".into();
+    /// let id: Id = "76561198000000000".into();
     /// let matches = client.get_profile_matches(id).await?;
     /// # Ok(())
     /// # }
     /// ```
     pub async fn get_profile_matches(
         &self,
-        id: impl Into<PlayerId>,
+        id: impl Into<Id>,
     ) -> Result<Vec<MatchDetailsResponse>, Error> {
         let id = id.into();
 
@@ -378,12 +378,12 @@ impl Client {
         }
     }
 
-    fn build_profile_query_params(&self, id: &PlayerId) -> Vec<(&'static str, String)> {
+    fn build_profile_query_params(&self, id: &Id) -> Vec<(&'static str, String)> {
         match id {
-            PlayerId::Steam64(id) => {
+            Id::Steam64(id) => {
                 vec![("steam64_id", id.as_ref().to_string())]
             }
-            PlayerId::Leetify(id) => {
+            Id::Leetify(id) => {
                 vec![("id", id.as_ref().to_string())]
             }
         }
@@ -444,28 +444,28 @@ mod tests {
     #[test]
     fn test_player_id_conversion() {
         // Test Steam64 ID conversion (numeric, 17 digits)
-        let id: PlayerId = "76561198283431555".into();
-        assert!(matches!(id, PlayerId::Steam64(_)));
+        let id: Id = "76561198283431555".into();
+        assert!(matches!(id, Id::Steam64(_)));
 
         // Test Leetify ID conversion (UUID format)
-        let id: PlayerId = "5ea07280-2399-4c7e-88ab-f2f7db0c449f".into();
-        assert!(matches!(id, PlayerId::Leetify(_)));
+        let id: Id = "5ea07280-2399-4c7e-88ab-f2f7db0c449f".into();
+        assert!(matches!(id, Id::Leetify(_)));
 
         // Test explicit Steam64 variant
-        let id = PlayerId::Steam64("76561198283431555".into());
-        assert!(matches!(id, PlayerId::Steam64(_)));
+        let id = Id::Steam64("76561198283431555".into());
+        assert!(matches!(id, Id::Steam64(_)));
 
         // Test explicit Leetify variant
-        let id = PlayerId::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into());
-        assert!(matches!(id, PlayerId::Leetify(_)));
+        let id = Id::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into());
+        assert!(matches!(id, Id::Leetify(_)));
 
         // Test that numeric strings >= 15 digits are treated as Steam64
-        let id: PlayerId = "76561198000000000".into();
-        assert!(matches!(id, PlayerId::Steam64(_)));
+        let id: Id = "76561198000000000".into();
+        assert!(matches!(id, Id::Steam64(_)));
 
         // Test that UUID format strings are treated as Leetify
-        let id: PlayerId = "00000000-0000-0000-0000-000000000000".into();
-        assert!(matches!(id, PlayerId::Leetify(_)));
+        let id: Id = "00000000-0000-0000-0000-000000000000".into();
+        assert!(matches!(id, Id::Leetify(_)));
     }
 
     #[test]

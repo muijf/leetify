@@ -1,4 +1,4 @@
-use leetify::{Client, DataSource, PlayerId};
+use leetify::{Client, DataSource, Id};
 
 #[tokio::main]
 async fn main() -> Result<(), leetify::Error> {
@@ -8,7 +8,7 @@ async fn main() -> Result<(), leetify::Error> {
     // Example 1: Get player profile by Steam64 ID
     println!("Fetching profile by Steam64 ID...");
     match client
-        .get_profile(PlayerId::Steam64("76561198283431555".into()))
+        .get_profile(Id::Steam64("76561198283431555".into()))
         .await
     {
         Ok(profile) => {
@@ -23,9 +23,7 @@ async fn main() -> Result<(), leetify::Error> {
     // Example 2: Get player profile by Leetify ID (UUID format)
     println!("\nFetching profile by Leetify ID...");
     match client
-        .get_profile(PlayerId::Leetify(
-            "5ea07280-2399-4c7e-88ab-f2f7db0c449f".into(),
-        ))
+        .get_profile(Id::Leetify("5ea07280-2399-4c7e-88ab-f2f7db0c449f".into()))
         .await
     {
         Ok(profile) => {
@@ -37,7 +35,7 @@ async fn main() -> Result<(), leetify::Error> {
     // Example 3: Get match history
     println!("\nFetching match history...");
     match client
-        .get_profile_matches(PlayerId::Steam64("76561198283431555".into()))
+        .get_profile_matches(Id::Steam64("76561198283431555".into()))
         .await
     {
         Ok(matches) => {
@@ -89,12 +87,12 @@ async fn main() -> Result<(), leetify::Error> {
         Err(e) => eprintln!("API key validation failed: {}", e),
     }
 
-    // Example 8: Using PlayerId with automatic conversion
-    println!("\nUsing PlayerId with automatic conversion...");
-    // String automatically converts to PlayerId:
+    // Example 8: Using Id with automatic conversion
+    println!("\nUsing Id with automatic conversion...");
+    // String automatically converts to Id:
     // - UUID format (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) -> Leetify ID
     // - Numeric strings (15+ digits) -> Steam64 ID
-    let id: PlayerId = "76561198283431555".into();
+    let id: Id = "76561198283431555".into();
     match client.get_profile(id).await {
         Ok(profile) => println!("Profile fetched: {}", profile.name),
         Err(e) => eprintln!("Error: {}", e),

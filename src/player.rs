@@ -1,6 +1,6 @@
 use crate::client::Client;
 use crate::error::Error;
-use crate::types::{MatchDetailsResponse, PlayerId, ProfileResponse};
+use crate::types::{Id, MatchDetailsResponse, ProfileResponse};
 
 /// High-level API for interacting with a specific player
 ///
@@ -10,10 +10,10 @@ use crate::types::{MatchDetailsResponse, PlayerId, ProfileResponse};
 /// # Examples
 ///
 /// ```no_run
-/// # use leetify::{Client, Player, PlayerId};
+/// # use leetify::{Client, Player, Id};
 /// # async fn example() -> Result<(), leetify::Error> {
 /// let client = Client::new();
-/// let player = Player::new(PlayerId::Steam64("76561198283431555".into()), &client);
+/// let player = Player::new(Id::Steam64("76561198283431555".into()), &client);
 ///
 /// // Get profile
 /// let profile = player.profile().await?;
@@ -26,7 +26,7 @@ use crate::types::{MatchDetailsResponse, PlayerId, ProfileResponse};
 /// # }
 /// ```
 pub struct Player<'a> {
-    id: PlayerId,
+    id: Id,
     client: &'a Client,
 }
 
@@ -40,11 +40,11 @@ impl<'a> Player<'a> {
     /// # Examples
     ///
     /// ```no_run
-    /// # use leetify::{Client, Player, PlayerId};
+    /// # use leetify::{Client, Player, Id};
     /// let client = Client::new();
-    /// let player = Player::new(PlayerId::Steam64("76561198283431555".into()), &client);
+    /// let player = Player::new(Id::Steam64("76561198283431555".into()), &client);
     /// ```
-    pub fn new(id: impl Into<PlayerId>, client: &'a Client) -> Self {
+    pub fn new(id: impl Into<Id>, client: &'a Client) -> Self {
         Self {
             id: id.into(),
             client,
@@ -52,7 +52,7 @@ impl<'a> Player<'a> {
     }
 
     /// Get the player's id
-    pub fn id(&self) -> &PlayerId {
+    pub fn id(&self) -> &Id {
         &self.id
     }
 
@@ -61,10 +61,10 @@ impl<'a> Player<'a> {
     /// # Examples
     ///
     /// ```no_run
-    /// # use leetify::{Client, Player, PlayerId};
+    /// # use leetify::{Client, Player, Id};
     /// # async fn example() -> Result<(), leetify::Error> {
     /// let client = Client::new();
-    /// let player = Player::new(PlayerId::Steam64("76561198283431555".into()), &client);
+    /// let player = Player::new(Id::Steam64("76561198283431555".into()), &client);
     /// let profile = player.profile().await?;
     /// println!("Player: {}", profile.name);
     /// # Ok(())
@@ -79,10 +79,10 @@ impl<'a> Player<'a> {
     /// # Examples
     ///
     /// ```no_run
-    /// # use leetify::{Client, Player, PlayerId};
+    /// # use leetify::{Client, Player, Id};
     /// # async fn example() -> Result<(), leetify::Error> {
     /// let client = Client::new();
-    /// let player = Player::new(PlayerId::Steam64("76561198283431555".into()), &client);
+    /// let player = Player::new(Id::Steam64("76561198283431555".into()), &client);
     /// let matches = player.matches().await?;
     /// println!("Found {} matches", matches.len());
     /// # Ok(())
@@ -103,17 +103,17 @@ impl Client {
     /// # Examples
     ///
     /// ```no_run
-    /// # use leetify::{Client, PlayerId};
+    /// # use leetify::{Client, Id};
     /// # async fn example() -> Result<(), leetify::Error> {
     /// let client = Client::new();
-    /// let player = client.player(PlayerId::Steam64("76561198283431555".into()));
+    /// let player = client.player(Id::Steam64("76561198283431555".into()));
     ///
     /// let profile = player.profile().await?;
     /// let matches = player.matches().await?;
     /// # Ok(())
     /// # }
     /// ```
-    pub fn player(&self, id: impl Into<PlayerId>) -> crate::player::Player<'_> {
+    pub fn player(&self, id: impl Into<Id>) -> crate::player::Player<'_> {
         crate::player::Player::new(id, self)
     }
 }
